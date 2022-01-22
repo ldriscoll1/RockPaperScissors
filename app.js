@@ -4,6 +4,9 @@ let cpuScore = 0;
 const score = document.querySelector("#score");
 const outcome = document.querySelector("#outcome");
 const btns = document.querySelectorAll(".btn");
+const winAudio = document.querySelector("#winSound");
+const loseAudio = document.querySelector("#loseSound");
+const tieAudio = document.querySelector("#tieSound");
 //Add a event listener to every button
 btns.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
@@ -36,7 +39,6 @@ btns.forEach(function (btn) {
         {
             cpuGuess = 'Paper';
         }
-        console.log(guess);
         //Find out the winner of the duel
         let outcomeText = '';
         if(guess == 'Rock')
@@ -44,16 +46,17 @@ btns.forEach(function (btn) {
             if(cpuGuess == 'Rock')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Tied';
+                computeWinner('tie');
             }
             else if(cpuGuess == 'Paper')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Lost';
-                cpuScore++;
+                computeWinner('cpu');
             }
             else if(cpuGuess == 'Scissors')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Won';
-                playerScore++;
+                computeWinner('player');
             }
         }
         if(guess == 'Paper')
@@ -61,16 +64,17 @@ btns.forEach(function (btn) {
             if(cpuGuess == 'Rock')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Won';
-                playerScore++;
+                computeWinner('player');
             }
             else if(cpuGuess == 'Paper')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Tied';
+                computeWinner('tie');
             }
             else if(cpuGuess == 'Scissors')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Lost';
-                cpuScore++;
+                computeWinner('cpu');
             }
         }
         if(guess == 'Scissors')
@@ -78,19 +82,37 @@ btns.forEach(function (btn) {
             if(cpuGuess == 'Rock')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Lost';
-                cpuScore++;
+                computeWinner('cpu');
             }
             else if(cpuGuess == 'Paper')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Won';
-                playerScore++;
+                computeWinner('player');
             }
             else if(cpuGuess == 'Scissors')
             {
                 outcomeText = 'CPU Chose '+ cpuGuess + ' you Tied';
+                computeWinner('tie');
             }
         }
         score.textContent = playerScore + ":" + cpuScore;
         outcome.textContent = outcomeText;
     });
 });
+function computeWinner(winner)
+{
+    if(winner == 'player')
+    {
+        playerScore++;
+        winAudio.play();
+    }
+    else if(winner == 'cpu')
+    {
+        cpuScore++;
+        loseAudio.play();
+    }
+    else if(winner == 'tie')
+    {
+        tieAudio.play();
+    }
+}
